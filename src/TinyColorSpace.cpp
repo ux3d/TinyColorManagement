@@ -140,3 +140,94 @@ glm::mat3 saturationMatrix(double sat, glm::vec3 rgb2Y)
 	return M;
 }
 
+//
+
+glm::vec3 nlSRGB_2_SRGB_Fast(const glm::vec3& color)
+{
+	return glm::vec3(glm::pow(color, glm::vec3(2.2)));
+}
+
+glm::vec3 SRGB_2_nlSRGB_Fast(const glm::vec3& color)
+{
+	return glm::pow(color, glm::vec3(1.0/2.2));
+}
+
+// see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_SRGB
+
+glm::vec3 nlSRGB_2_SRGB(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 0.04045)
+		{
+			result[i] = color[i] / 12.92;
+		}
+		else
+		{
+			result[i] = glm::pow((color[i] + 0.055) / 1.055, 2.4);
+		}
+	}
+
+	return result;
+}
+
+glm::vec3 SRGB_2_nlSRGB(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 0.0031308)
+		{
+			result[i] = color[i] * 12.92;
+		}
+		else
+		{
+			result[i] = 1.055 * glm::pow(color[i], 1.0 / 2.4) - 0.055;
+		}
+	}
+
+	return result;
+}
+
+// see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_BT1886
+
+glm::vec3 nlREC709_2_REC709(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 0.081)
+		{
+			result[i] = color[i] / 4.5;
+		}
+		else
+		{
+			result[i] = glm::pow((color[i] + 0.099) / 1.099, 2.2);
+		}
+	}
+
+	return result;
+}
+
+glm::vec3 REC709_2_nlREC709(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 0.0018)
+		{
+			result[i] = color[i] * 4.5;
+		}
+		else
+		{
+			result[i] = 1.099 * glm::pow(color[i], 1.0 / 2.2) - 0.099;
+		}
+	}
+
+	return result;
+}

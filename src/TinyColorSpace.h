@@ -112,4 +112,15 @@ const glm::mat3 RRT_SAT = saturationMatrix(RRT_SAT_FACTOR, AP1_RGB2Y);
 const double ODT_SAT_FACTOR = 0.93;
 const glm::mat3 ODT_SAT = saturationMatrix(ODT_SAT_FACTOR, AP1_RGB2Y);
 
+//
+
+glm::vec3 nlSRGB_2_SRGB_Fast(const glm::vec3& color);
+glm::vec3 SRGB_2_nlSRGB_Fast(const glm::vec3& color);
+
+glm::vec3 nlSRGB_2_SRGB(const glm::vec3& color);
+glm::vec3 SRGB_2_nlSRGB(const glm::vec3& color);
+
+glm::vec3 nlREC709_2_REC709(const glm::vec3& color);
+glm::vec3 REC709_2_nlREC709(const glm::vec3& color);
+
 #endif /* TINYCOLORSPACE_H_ */

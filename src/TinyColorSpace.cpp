@@ -231,3 +231,49 @@ glm::vec3 REC709_2_nlREC709(const glm::vec3& color)
 
 	return result;
 }
+
+// see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_PQ
+
+glm::vec3 PQ_2_REC2020(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	const double m1 = 2610.0 / 16384.0;
+	const double m2 = 2523.0 / 4096.0 * 128.0;
+	const double c1 = 3424.0 / 4096.0;
+	const double c2 = 2413.0 / 4096.0 * 32.0;
+	const double c3 = 2392.0 / 4096.0 * 32.0;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		double Y = glm::pow(color[i], 1.0 / m2);
+		double a = glm::max(Y - c1, 0.0);
+		double b = c2 - c3 * Y;
+		double Ym = glm::pow(a / b, 1.0 / m1);
+
+		result[i] = 10000.0 * Ym;
+	}
+
+	return result;
+}
+
+glm::vec3 REC2020_2_PQ(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	const double m1 = 2610.0 / 16384.0;
+	const double m2 = 2523.0 / 4096.0 * 128.0;
+	const double c1 = 3424.0 / 4096.0;
+	const double c2 = 2413.0 / 4096.0 * 32.0;
+	const double c3 = 2392.0 / 4096.0 * 32.0;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		double Y = color[i] / 10000.0;
+		double Ym1 = glm::pow(Y, m1);
+
+		result[i] = glm::pow((c1 + c2 * Ym1) / (1.0 + c3 * Ym1), m2);
+	}
+
+	return result;
+}

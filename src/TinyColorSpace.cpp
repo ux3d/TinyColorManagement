@@ -277,3 +277,51 @@ glm::vec3 REC2020_2_PQ(const glm::vec3& color)
 
 	return result;
 }
+
+// see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_HLG
+
+glm::vec3 HLG_2_REC2020(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	const double a = 0.17883277;
+	const double b = 1.0 - 4.0 * a;
+	const double c = 0.5 - a * glm::log(4.0 * a);
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 1.0 / 12.0)
+		{
+			result[i] = glm::sqrt(3.0 * color[i]);
+		}
+		else
+		{
+			result[i] = a * glm::log(12.0 * color[i] - b) + c;
+		}
+	}
+
+	return result;
+}
+
+glm::vec3 REC2020_2_HLG(const glm::vec3& color)
+{
+	glm::vec3 result;
+
+	const double a = 0.17883277;
+	const double b = 1.0 - 4.0 * a;
+	const double c = 0.5 - a * glm::log(4.0 * a);
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (color[i] <= 0.5)
+		{
+			result[i] = (color[i] * color[i]) / 3.0;
+		}
+		else
+		{
+			result[i] = 1.0 / 12.0 * (b + glm::exp((color[i] - c) / a));
+		}
+	}
+
+	return result;
+}

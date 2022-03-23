@@ -325,3 +325,15 @@ glm::vec3 REC2020_2_HLG(const glm::vec3& color)
 
 	return result;
 }
+
+//
+
+double SRGB_2_Y(const glm::vec3& color)
+{
+	return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+}
+
+double REC709_2_Y(const glm::vec3& color)
+{
+	return SRGB_2_Y(color);
+}

@@ -129,4 +129,9 @@ glm::vec3 REC2020_2_PQ(const glm::vec3& color);
 glm::vec3 HLG_2_REC2020(const glm::vec3& color);
 glm::vec3 REC2020_2_HLG(const glm::vec3& color);
 
+//
+
+double SRGB_2_Y(const glm::vec3& color);
+double REC709_2_Y(const glm::vec3& color);
+
 #endif /* TINYCOLORSPACE_H_ */

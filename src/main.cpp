@@ -57,10 +57,10 @@ int main(int argc, char* argv[])
 
 	//
 
-	generateMat3(ODT_SAT);
-
 	test = XYZ_2_SRGB * D60_2_D65 * AP1_2_XYZ;
 	generateMat3(test);
+
+	generateMat3(ODT_SAT);
 
 	test = test * ODT_SAT;
 	generateMat3(test);

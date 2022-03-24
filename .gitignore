@@ -34,3 +34,4 @@
 /Debug/
 /Release/
 /build/
+*.exr

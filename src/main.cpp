@@ -6,6 +6,8 @@
 
 #include "TinyColorSpace.h"
 
+#include "CIE1931.h"
+
 using namespace OIIO;
 
 void generateMat3(const glm::mat3& m)
@@ -149,6 +151,20 @@ public:
 		}
 	}
 
+	void multiply(const glm::vec4& color)
+	{
+		for (uint32_t y = 0; y < height; y++)
+		{
+			for (uint32_t x = 0; x < width; x++)
+			{
+				for (uint32_t c = 0; c < channels; c++)
+				{
+					pixels[channels * width * (height - 1 - y) + channels * x + c] *= color[c];
+				}
+			}
+		}
+	}
+
 	void gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 	{
 		if (width <= 1)
@@ -195,6 +211,81 @@ public:
 		}
 	}
 
+	void chromacity(const Chromaticities& chroma, double Y)
+	{
+		if (width <= 1 || height <= 1 || channels < 3)
+		{
+			return;
+		}
+
+		std::vector<glm::vec3> xyYs;
+
+		for (size_t i = 0; i < cie1931.size(); i++)
+		{
+			glm::vec3 XYZ = glm::vec3(cie1931[i].X, cie1931[i].Y, cie1931[i].Z);
+			glm::vec3 xyY = XYZ_2_xyY(XYZ);
+
+			xyYs.push_back(xyY);
+		}
+
+		double slope = (xyYs.back().y - xyYs.front().y) / (xyYs.back().x - xyYs.front().x);
+
+		for (uint32_t y = 0; y < height; y++)
+		{
+			for (uint32_t x = 0; x < width; x++)
+			{
+				double xC = (double)x / (double)(width - 1);
+				double yC = (double)y / (double)(height - 1);
+
+				glm::vec3 color = glm::vec3(0.0, 0.0, 0.0);
+
+				bool bl = false;
+				bool br = false;
+				bool tl = false;
+				bool tr = false;
+				for (size_t i = 0; i < xyYs.size(); i++)
+				{
+					if (xC >= xyYs[i].x && yC >= xyYs[i].y)
+					{
+						bl = true;
+					}
+					if (xC >= xyYs[i].x && yC <= xyYs[i].y)
+					{
+						tl = true;
+					}
+					if (xC <= xyYs[i].x && yC <= xyYs[i].y)
+					{
+						tr = true;
+					}
+
+					//
+
+					if (yC >= slope * (xC - xyYs.front().x) + xyYs.front().y)
+					{
+						br = true;
+					}
+				}
+
+				if (bl && br && tl && tr)
+				{
+					glm::vec3 XYZ = xyY_2_XYZ(glm::vec3(xC, yC, Y));
+
+					glm::vec3 SRGB = XYZ_2_SRGB * XYZ;
+
+					// Make sure, one channel is fully saturated.
+					SRGB /= glm::max(glm::max(SRGB.r, SRGB.g), SRGB.b);
+
+					color = SRGB;
+				}
+
+				for (uint32_t c = 0; c < channels; c++)
+				{
+					pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
+				}
+			}
+		}
+	}
+
 };
 
 //
@@ -232,7 +323,8 @@ int main(int argc, char* argv[])
 	ImageData imageData(3, 512, 512);
 	//imageData.fill(glm::vec4(1.0, 0.0, 0.0, 0.0));
 	//imageData.gradeHorizontal(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
-	imageData.gradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
+	//imageData.gradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
+	imageData.chromacity(SRGB, 1.0);
 
 	//
 

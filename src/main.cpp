@@ -50,6 +50,8 @@ class ImageData {
 
 private:
 
+	// Origin is bottom left.
+
 	std::vector<float> pixels;
 	uint32_t channels = 0;
 	uint32_t width = 0;
@@ -114,7 +116,7 @@ public:
 
 		for (uint32_t c = 0; c < channels; c++)
 		{
-			result[c] = pixels[channels * width * y + channels * x + c];
+			result[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
 		}
 
 		return result;
@@ -129,7 +131,7 @@ public:
 
 		for (uint32_t c = 0; c < channels; c++)
 		{
-			pixels[channels * width * y + channels * x + c] = color[c];
+			pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
 		}
 	}
 
@@ -141,7 +143,53 @@ public:
 			{
 				for (uint32_t c = 0; c < channels; c++)
 				{
-					pixels[channels * width * y + channels * x + c] = color[c];
+					pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
+				}
+			}
+		}
+	}
+
+	void gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
+	{
+		if (width <= 1)
+		{
+			return;
+		}
+
+		for (uint32_t y = 0; y < height; y++)
+		{
+			for (uint32_t x = 0; x < width; x++)
+			{
+				double weight = (double)x / (double)(width - 1);
+
+				glm::vec4 gradient = glm::mix(start, end, weight);
+
+				for (uint32_t c = 0; c < channels; c++)
+				{
+					pixels[channels * width * (height - 1 - y) + channels * x + c] = gradient[c];
+				}
+			}
+		}
+	}
+
+	void gradeVertical(const glm::vec4& start, const glm::vec4& end)
+	{
+		if (height <= 1)
+		{
+			return;
+		}
+
+		for (uint32_t y = 0; y < height; y++)
+		{
+			for (uint32_t x = 0; x < width; x++)
+			{
+				double weight = (double)y / (double)(height - 1);
+
+				glm::vec4 gradient = glm::mix(start, end, weight);
+
+				for (uint32_t c = 0; c < channels; c++)
+				{
+					pixels[channels * width * (height - 1 - y) + channels * x + c] = gradient[c];
 				}
 			}
 		}
@@ -182,7 +230,9 @@ int main(int argc, char* argv[])
 	//
 
 	ImageData imageData(3, 512, 512);
-	imageData.fill(glm::vec4(1.0, 0.0, 0.0, 0.0));
+	//imageData.fill(glm::vec4(1.0, 0.0, 0.0, 0.0));
+	//imageData.gradeHorizontal(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
+	imageData.gradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
 
 	//
 

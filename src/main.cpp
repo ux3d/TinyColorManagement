@@ -340,5 +340,7 @@ int main(int argc, char* argv[])
 
 	printf("Saved '%s'\n", filename);
 
+	WAVELENGTH_2_XYZ(360.6);
+
 	return 0;
 }

@@ -5,8 +5,7 @@
 #include <OpenImageIO/imageio.h>
 
 #include "TinyColorSpace.h"
-
-#include "CIE1931.h"
+#include "CIE_XYZ_cmf.h"
 
 using namespace OIIO;
 
@@ -220,9 +219,9 @@ public:
 
 		std::vector<glm::vec3> xyYs;
 
-		for (size_t i = 0; i < cie1931.size(); i++)
+		for (size_t i = 0; i < cmf1931.size(); i++)
 		{
-			glm::vec3 XYZ = glm::vec3(cie1931[i].X, cie1931[i].Y, cie1931[i].Z);
+			glm::vec3 XYZ = cmf1931[i].XYZ;
 			glm::vec3 xyY = XYZ_2_xyY(XYZ);
 
 			xyYs.push_back(xyY);
@@ -239,34 +238,34 @@ public:
 
 				glm::vec3 color = glm::vec3(0.0, 0.0, 0.0);
 
-				bool bl = false;
-				bool br = false;
-				bool tl = false;
-				bool tr = false;
+				bool bottomLeft = false;
+				bool bottomRight = false;
+				bool topLeft = false;
+				bool topRight = false;
 				for (size_t i = 0; i < xyYs.size(); i++)
 				{
 					if (xC >= xyYs[i].x && yC >= xyYs[i].y)
 					{
-						bl = true;
+						bottomLeft = true;
 					}
 					if (xC >= xyYs[i].x && yC <= xyYs[i].y)
 					{
-						tl = true;
+						topLeft = true;
 					}
 					if (xC <= xyYs[i].x && yC <= xyYs[i].y)
 					{
-						tr = true;
+						topRight = true;
 					}
 
 					//
 
 					if (yC >= slope * (xC - xyYs.front().x) + xyYs.front().y)
 					{
-						br = true;
+						bottomRight = true;
 					}
 				}
 
-				if (bl && br && tl && tr)
+				if (bottomLeft && bottomRight && topLeft && topRight)
 				{
 					glm::vec3 XYZ = xyY_2_XYZ(glm::vec3(xC, yC, Y));
 

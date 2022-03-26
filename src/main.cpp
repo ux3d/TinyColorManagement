@@ -140,5 +140,13 @@ int main(int argc, char* argv[])
 	}
 	printf("Saved '%s'\n", filename.c_str());
 
+	//
+
+	// Sunny 16 rule with a 50mm lense see https://en.wikipedia.org/wiki/Sunny_16_rule
+
+	double lense = 50.0;
+	double ev100 = calculateEV100(lense / 16.0, 1.0 / 100.0, 100.0);
+	printf("Exposure: %f\n", EV100_2_EXPOSURE(ev100));
+
 	return 0;
 }

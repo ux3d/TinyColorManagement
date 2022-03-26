@@ -79,8 +79,6 @@ glm::mat3 XYZ_2_RGB(const Chromaticities& chroma, double Y);
 
 glm::mat3 chromaticAdaptationMatrix(const glm::vec2& source, const glm::vec2& destination);
 
-glm::mat3 saturationMatrix(double sat, glm::vec3 rgb2Y);
-
 //
 
 const glm::mat3 SRGB_2_XYZ = RGB_2_XYZ(SRGB, 1.0f);
@@ -99,18 +97,6 @@ const glm::mat3 XYZ_2_AP1 = XYZ_2_RGB(AP1, 1.0f);
 const glm::mat3 D65_2_D60 = chromaticAdaptationMatrix(REC709.white, AP0.white);
 const glm::mat3 D60_2_D65 = chromaticAdaptationMatrix(AP0.white, REC709.white);
 
-
-const glm::vec3 AP1_RGB2Y = {
-		AP1_2_XYZ[0][1],
-        AP1_2_XYZ[1][1],
-        AP1_2_XYZ[2][1]
-};
-
-const double RRT_SAT_FACTOR = 0.96;
-const glm::mat3 RRT_SAT = saturationMatrix(RRT_SAT_FACTOR, AP1_RGB2Y);
-
-const double ODT_SAT_FACTOR = 0.93;
-const glm::mat3 ODT_SAT = saturationMatrix(ODT_SAT_FACTOR, AP1_RGB2Y);
 
 //
 

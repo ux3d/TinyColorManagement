@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 
 	//
 
-	const char* filename = "test.exr";
+	/*const char* filename = "test.exr";
 	std::unique_ptr<ImageOutput> output = ImageOutput::create(filename);
 	if (!output)
 	{
@@ -95,6 +95,20 @@ int main(int argc, char* argv[])
 	ImageSpec spec (imageData.getWidth(), imageData.getHeight(), imageData.getChannels(), TypeDesc::FLOAT);
 	output->open(filename, spec);
 	output->write_image(TypeDesc::FLOAT, imageData.getPixelsData());
+	output->close();*/
+
+	std::vector<uint8_t> pixelData;
+	imageData.convertToUINT8(pixelData);
+
+	const char* filename = "test.png";
+	std::unique_ptr<ImageOutput> output = ImageOutput::create(filename);
+	if (!output)
+	{
+		return -1;
+	}
+	ImageSpec spec (imageData.getWidth(), imageData.getHeight(), imageData.getChannels(), TypeDesc::UINT8);
+	output->open(filename, spec);
+	output->write_image(TypeDesc::UINT8, pixelData.data());
 	output->close();
 
 	printf("Saved '%s'\n", filename);

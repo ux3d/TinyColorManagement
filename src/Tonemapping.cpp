@@ -73,10 +73,10 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 					result = XYZ_2_SRGB * XYZ;
 				break;
 			case ColorSpace_REC709:
-					XYZ = XYZ_2_REC709 * XYZ;
+					result = XYZ_2_REC709 * XYZ;
 				break;
 			case ColorSpace_REC2020:
-					XYZ = XYZ_2_REC2020 * XYZ;
+					result = XYZ_2_REC2020 * XYZ;
 				break;
 			case ColorSpace_AP1:
 			default:

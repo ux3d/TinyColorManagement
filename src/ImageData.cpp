@@ -1,30 +1,22 @@
 #include "ImageData.h"
 
+#include <string>
+
 #include "CIE_XYZ_cmf.h"
 #include "TransferFunctions.h"
 
-ImageData::ImageData(uint32_t channels, uint32_t width, uint32_t height)
+ImageData::ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace) :
+	channels(channels), width(width), height(height), colorSpace(colorSpace)
 {
-	if (channels < 1 || channels > 4)
+	if (!isValid())
 	{
-		return;
+		this->channels = 0;
+		this->width = 0;
+		this->height = 0;
+		this->colorSpace = ColorSpace_UNKNOWN;
 	}
-	// Only support 8K today
-	if (width < 1 || width > 7680)
-	{
-		return;
-	}
-	if (height < 1 || height > 4320)
-	{
-		return;
-	}
-
-	//
 
 	this->pixels.resize(channels * width * height);
-	this->channels = channels;
-	this->width = width;
-	this->height = height;
 }
 
 uint32_t ImageData::getChannels() const
@@ -42,9 +34,37 @@ uint32_t ImageData::getHeight() const
 	return height;
 }
 
+ColorSpace ImageData::getColorSpace() const
+{
+	return colorSpace;
+}
+
 const float* ImageData::getPixelsData() const
 {
 	return (const float*)pixels.data();
+}
+
+bool ImageData::isValid() const
+{
+	if (channels < 1 || channels > 4)
+	{
+		return false;
+	}
+	// For convenience, only support a specific dimension
+	if (width < 16 || width > 16384)
+	{
+		return false;
+	}
+	if (height < 16 || height > 16384)
+	{
+		return false;
+	}
+	if (colorSpace == ColorSpace_UNKNOWN || colorSpace == ColorSpace_AP0)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 glm::vec4 ImageData::getColor(uint32_t x, uint32_t y) const
@@ -64,21 +84,33 @@ glm::vec4 ImageData::getColor(uint32_t x, uint32_t y) const
 	return result;
 }
 
-void ImageData::setColor(uint32_t x, uint32_t y, const glm::vec4& color)
+bool ImageData::setColor(uint32_t x, uint32_t y, const glm::vec4& color)
 {
+	if (!isValid())
+	{
+		return false;
+	}
+
 	if (x >= width || y >= height)
 	{
-		return;
+		return false;
 	}
 
 	for (uint32_t c = 0; c < channels; c++)
 	{
 		pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
 	}
+
+	return true;
 }
 
-void ImageData::fill(const glm::vec4& color)
+bool ImageData::fill(const glm::vec4& color)
 {
+	if (!isValid())
+	{
+		return false;
+	}
+
 	for (uint32_t y = 0; y < height; y++)
 	{
 		for (uint32_t x = 0; x < width; x++)
@@ -89,10 +121,17 @@ void ImageData::fill(const glm::vec4& color)
 			}
 		}
 	}
+
+	return false;
 }
 
-void ImageData::multiply(const glm::vec4& color)
+bool ImageData::multiply(const glm::vec4& color)
 {
+	if (!isValid())
+	{
+		return false;
+	}
+
 	for (uint32_t y = 0; y < height; y++)
 	{
 		for (uint32_t x = 0; x < width; x++)
@@ -103,13 +142,15 @@ void ImageData::multiply(const glm::vec4& color)
 			}
 		}
 	}
+
+	return true;
 }
 
-void ImageData::gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
+bool ImageData::gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 {
-	if (width <= 1)
+	if (!isValid())
 	{
-		return;
+		return false;
 	}
 
 	for (uint32_t y = 0; y < height; y++)
@@ -126,13 +167,15 @@ void ImageData::gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 			}
 		}
 	}
+
+	return true;
 }
 
-void ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
+bool ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
 {
-	if (height <= 1)
+	if (!isValid())
 	{
-		return;
+		return false;
 	}
 
 	for (uint32_t y = 0; y < height; y++)
@@ -149,13 +192,15 @@ void ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
 			}
 		}
 	}
+
+	return true;
 }
 
-void ImageData::chromacity(const Chromaticities& chroma, double Y)
+bool ImageData::chromacity(const Chromaticities& chroma, double Y)
 {
-	if (width <= 1 || height <= 1 || channels < 3)
+	if (!isValid())
 	{
-		return;
+		return false;
 	}
 
 	std::vector<glm::vec3> xyYs;
@@ -210,12 +255,30 @@ void ImageData::chromacity(const Chromaticities& chroma, double Y)
 			{
 				glm::vec3 XYZ = xyY_2_XYZ(glm::vec3(xC, yC, Y));
 
-				glm::vec3 SRGB = XYZ_2_SRGB * XYZ;
+				glm::vec3 RGB;
+				switch (colorSpace)
+				{
+					case ColorSpace_SRGB:
+							RGB = XYZ_2_SRGB * XYZ;
+						break;
+					case ColorSpace_REC709:
+							RGB = XYZ_2_REC709 * XYZ;
+						break;
+					case ColorSpace_REC2020:
+							RGB = XYZ_2_REC2020 * XYZ;
+						break;
+					case ColorSpace_AP1:
+							RGB = XYZ_2_AP1 * XYZ;
+						break;
+					default:
+							// Unreachable code
+						break;
+				}
 
 				// Make sure, one channel is fully saturated.
-				SRGB /= glm::max(glm::max(SRGB.r, SRGB.g), SRGB.b);
+				RGB /= glm::max(glm::max(RGB.r, RGB.g), RGB.b);
 
-				color = SRGB;
+				color = RGB;
 			}
 
 			for (uint32_t c = 0; c < channels; c++)
@@ -224,12 +287,33 @@ void ImageData::chromacity(const Chromaticities& chroma, double Y)
 			}
 		}
 	}
+
+	return true;
 }
 
 //
 
-void ImageData::convertToUINT8(std::vector<uint8_t>& convertedPixels)
+bool ImageData::gatherPixelDataSFLOAT(std::vector<float>& convertedPixels)
 {
+	if (!isValid())
+	{
+		return false;
+	}
+
+	convertedPixels.reserve(channels * width * height);
+
+	memcpy(convertedPixels.data(), pixels.data(), sizeof(float) * channels * width * height);
+
+	return true;
+}
+
+bool ImageData::gatherPixelDataUINT8(std::vector<uint8_t>& convertedPixels)
+{
+	if (!isValid())
+	{
+		return false;
+	}
+
 	convertedPixels.reserve(channels * width * height);
 
 	for (uint32_t y = 0; y < height; y++)
@@ -244,4 +328,6 @@ void ImageData::convertToUINT8(std::vector<uint8_t>& convertedPixels)
 			}
 		}
 	}
+
+	return true;
 }

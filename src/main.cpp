@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 	output->close();*/
 
 	std::vector<uint8_t> pixelData;
-	imageData.convertToUINT8(pixelData);
+	imageData.gatherPixelDataUINT8(pixelData);
 
 	const char* filename = "test.png";
 	std::unique_ptr<ImageOutput> output = ImageOutput::create(filename);

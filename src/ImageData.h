@@ -6,8 +6,6 @@
 
 #include "ColorPrimaries.h"
 
-// Data and calculations are to be expected in linear SRGB space.
-
 class ImageData {
 
 private:
@@ -18,10 +16,11 @@ private:
 	uint32_t channels = 0;
 	uint32_t width = 0;
 	uint32_t height = 0;
+	ColorSpace colorSpace;
 
 public:
 
-	ImageData(uint32_t channels, uint32_t width, uint32_t height);
+	ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace = ColorSpace_SRGB);
 
 	uint32_t getChannels() const;
 
@@ -29,27 +28,33 @@ public:
 
 	uint32_t getHeight() const;
 
+	ColorSpace getColorSpace() const;
+
 	const float* getPixelsData() const;
+
+	bool isValid() const;
 
 	//
 
 	glm::vec4 getColor(uint32_t x, uint32_t y) const;
 
-	void setColor(uint32_t x, uint32_t y, const glm::vec4& color);
+	bool setColor(uint32_t x, uint32_t y, const glm::vec4& color);
 
-	void fill(const glm::vec4& color);
+	bool fill(const glm::vec4& color);
 
-	void multiply(const glm::vec4& color);
+	bool multiply(const glm::vec4& color);
 
-	void gradeHorizontal(const glm::vec4& start, const glm::vec4& end);
+	bool gradeHorizontal(const glm::vec4& start, const glm::vec4& end);
 
-	void gradeVertical(const glm::vec4& start, const glm::vec4& end);
+	bool gradeVertical(const glm::vec4& start, const glm::vec4& end);
 
-	void chromacity(const Chromaticities& chroma, double Y);
+	bool chromacity(const Chromaticities& chroma, double Y);
 
 	//
 
-	void convertToUINT8(std::vector<uint8_t>& convertedPixels);
+	bool gatherPixelDataSFLOAT(std::vector<float>& convertedPixels);
+
+	bool gatherPixelDataUINT8(std::vector<uint8_t>& convertedPixels);
 
 };
 

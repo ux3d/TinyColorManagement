@@ -5,6 +5,10 @@
 #include "CIE_XYZ_cmf.h"
 #include "TransferFunctions.h"
 
+ImageData::ImageData()
+{
+}
+
 ImageData::ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace) :
 	channels(channels), width(width), height(height), colorSpace(colorSpace)
 {
@@ -17,6 +21,30 @@ ImageData::ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSp
 	}
 
 	this->pixels.resize(channels * width * height);
+}
+
+bool ImageData::reformat(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace, const std::vector<float>& pixelData)
+{
+	this->channels = channels;
+	this->width = width;
+	this->height = height;
+	this->colorSpace = colorSpace;
+
+	if (!isValid())
+	{
+		this->channels = 0;
+		this->width = 0;
+		this->height = 0;
+		this->colorSpace = ColorSpace_UNKNOWN;
+
+		return false;
+	}
+
+	this->pixels.resize(channels * width * height);
+
+	memcpy(this->pixels.data(), pixelData.data(), sizeof(float) * channels * width * height);
+
+	return true;
 }
 
 uint32_t ImageData::getChannels() const
@@ -69,7 +97,7 @@ bool ImageData::isValid() const
 
 glm::vec4 ImageData::getColor(uint32_t x, uint32_t y) const
 {
-	glm::vec4 result = glm::vec4(0.0, 0.0, 0.0, 0.0);
+	glm::vec4 result = glm::vec4(0.0, 0.0, 0.0, 1.0);
 
 	if (x >= width || y >= height)
 	{

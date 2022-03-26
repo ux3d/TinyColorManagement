@@ -17,11 +17,14 @@ private:
 	uint32_t channels = 0;
 	uint32_t width = 0;
 	uint32_t height = 0;
-	ColorSpace colorSpace;
+	ColorSpace colorSpace = ColorSpace_UNKNOWN;
 
 public:
 
+	ImageData();
 	ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace = ColorSpace_SRGB);
+
+	bool reformat(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace, const std::vector<float>& pixelData);
 
 	uint32_t getChannels() const;
 

@@ -121,5 +121,24 @@ int main(int argc, char* argv[])
 	}
 	printf("Saved '%s'\n", filename.c_str());
 
+	//
+
+	ImageData loadData;
+	if (!load(loadData, filename))
+	{
+		return -1;
+	}
+	printf("Loaded '%s'\n", filename.c_str());
+
+	glm::vec4 color = loadData.getColor(0, 0);
+	printf("%f %f %f %f\n", color.r, color.g, color.b, color.a);
+
+	filename = "test_out.png";
+	if (!save(loadData, filename))
+	{
+		return -1;
+	}
+	printf("Saved '%s'\n", filename.c_str());
+
 	return 0;
 }

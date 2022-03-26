@@ -7,4 +7,6 @@
 
 bool save(const ImageData& imageData, const std::string& filename);
 
+bool load(ImageData& imageData, const std::string& filename);
+
 #endif /* IMAGEDATAIO_H_ */

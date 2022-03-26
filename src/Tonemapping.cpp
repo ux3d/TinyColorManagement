@@ -14,6 +14,11 @@ glm::vec3 tonemapReinhard(const glm::vec3& color)
 
 glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 {
+	if (colorSpace == ColorSpace_UNKNOWN || colorSpace == ColorSpace_AP0)
+	{
+		return glm::vec3(0.0, 0.0, 0.0);
+	}
+
 	glm::vec3 AP1;
 
 	if (colorSpace != ColorSpace_AP1)
@@ -32,6 +37,7 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 					XYZ = REC2020_2_XYZ * color;
 				break;
 			case ColorSpace_AP1:
+			default:
 					// Unreachable code
 				break;
 		}
@@ -73,6 +79,7 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 					XYZ = XYZ_2_REC2020 * XYZ;
 				break;
 			case ColorSpace_AP1:
+			default:
 					// Unreachable code
 				break;
 		}

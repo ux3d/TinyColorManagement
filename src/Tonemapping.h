@@ -1,16 +1,9 @@
 #ifndef TONEMAPPING_H_
 #define TONEMAPPING_H_
 
-#include <glm/glm.hpp>
+#include "ColorPrimaries.h"
 
 // see https://64.github.io/tonemapping/
-
-enum ColorSpace {
-	ColorSpace_SRGB,
-	ColorSpace_REC709,
-	ColorSpace_REC2020,
-	ColorSpace_AP1
-};
 
 glm::vec3 tonemapNone(const glm::vec3& color);
 

@@ -2,10 +2,9 @@
 
 glm::mat3 saturationMatrix(double sat, glm::vec3 Yrgb)
 {
-	//
 	// This function determines the terms for a 3x3 saturation matrix that is
 	// based on the luminance of the input.
-	//
+
 	glm::mat3 M;
 
 	M[0][0] = (1.0 - sat) * Yrgb[0] + sat;

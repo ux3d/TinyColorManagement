@@ -19,8 +19,6 @@
 // Chromatic Adaptation
 // http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html
 
-//
-
 struct Chromaticities
 {
     glm::vec2	red;		// CIE xy coordinates of red primary
@@ -77,10 +75,6 @@ glm::mat3 XYZ_2_RGB(const Chromaticities& chroma, double Y);
 
 //
 
-glm::mat3 chromaticAdaptationMatrix(const glm::vec2& source, const glm::vec2& destination);
-
-//
-
 const glm::mat3 SRGB_2_XYZ = RGB_2_XYZ(SRGB, 1.0f);
 const glm::mat3 XYZ_2_SRGB = XYZ_2_RGB(SRGB, 1.0f);
 
@@ -93,6 +87,9 @@ const glm::mat3 XYZ_2_REC2020 = XYZ_2_RGB(REC2020, 1.0f);
 const glm::mat3 AP1_2_XYZ = RGB_2_XYZ(AP1, 1.0f);
 const glm::mat3 XYZ_2_AP1 = XYZ_2_RGB(AP1, 1.0f);
 
+//
+
+glm::mat3 chromaticAdaptationMatrix(const glm::vec2& source, const glm::vec2& destination);
 
 const glm::mat3 D65_2_D60 = chromaticAdaptationMatrix(REC709.white, AP0.white);
 const glm::mat3 D60_2_D65 = chromaticAdaptationMatrix(AP0.white, REC709.white);

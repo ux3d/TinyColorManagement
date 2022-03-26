@@ -8,6 +8,8 @@
 
 using namespace OIIO;
 
+//
+
 void generateMat3(const glm::mat3& m)
 {
 	printf("const mat3 m = mat3(\n");
@@ -338,8 +340,6 @@ int main(int argc, char* argv[])
 	output->close();
 
 	printf("Saved '%s'\n", filename);
-
-	WAVELENGTH_2_XYZ(360.6);
 
 	return 0;
 }

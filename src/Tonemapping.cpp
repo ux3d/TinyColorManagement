@@ -1,0 +1,82 @@
+#include "Tonemapping.h"
+
+#include "ACES.h"
+
+glm::vec3 tonemapNone(const glm::vec3& color)
+{
+	return glm::clamp(color, glm::vec3(0.0, 0.0, 0.0), glm::vec3(1.0, 1.0, 1.0));
+}
+
+glm::vec3 tonemapReinhard(const glm::vec3& color)
+{
+	return color / (glm::vec3(1.0) + color);
+}
+
+glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
+{
+	glm::vec3 AP1;
+
+	if (colorSpace != ColorSpace_AP1)
+	{
+		glm::vec3 XYZ;
+
+		switch (colorSpace)
+		{
+			case ColorSpace_SRGB:
+					XYZ = SRGB_2_XYZ * color;
+				break;
+			case ColorSpace_REC709:
+					XYZ = REC709_2_XYZ * color;
+				break;
+			case ColorSpace_REC2020:
+					XYZ = REC2020_2_XYZ * color;
+				break;
+			case ColorSpace_AP1:
+					// Unreachable code
+				break;
+		}
+
+		AP1 = XYZ_2_AP1 * D65_2_D60 * XYZ;
+	}
+
+	// ACES tonemapping in AP1 color space
+
+	// RTT_SAT
+	AP1 = RRT_SAT * AP1;
+
+	// RRT and ODT fit output between 0.0 and 1.0
+    glm::vec3 a = (AP1 + glm::vec3(0.0245786)) * AP1 - glm::vec3(0.000090537);
+    glm::vec3 b = (AP1 * glm::vec3(0.983729) + glm::vec3(0.4329510)) * AP1 + glm::vec3(0.238081);
+
+    AP1 = a / b;
+
+	// ODT_SAT
+    AP1 = ODT_SAT * AP1;
+
+	//
+
+	glm::vec3 result;
+
+	if (colorSpace != ColorSpace_AP1)
+	{
+		glm::vec3 XYZ = D60_2_D65 * AP1_2_XYZ * AP1;
+
+		switch (colorSpace)
+		{
+			case ColorSpace_SRGB:
+					result = XYZ_2_SRGB * XYZ;
+				break;
+			case ColorSpace_REC709:
+					XYZ = XYZ_2_REC709 * XYZ;
+				break;
+			case ColorSpace_REC2020:
+					XYZ = XYZ_2_REC2020 * XYZ;
+				break;
+			case ColorSpace_AP1:
+					// Unreachable code
+				break;
+		}
+	}
+
+	return result;
+}

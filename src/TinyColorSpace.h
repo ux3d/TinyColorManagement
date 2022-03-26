@@ -9,6 +9,8 @@
 
 #include "ACES.h"
 
+#include "Tonemapping.h"
+
 #include "TransferFunctions.h"
 
 #endif /* TINYCOLORSPACE_H_ */

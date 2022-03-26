@@ -17,4 +17,6 @@
 
 #include "ImageDataIO.h"
 
+#include "Exposure.h"
+
 #endif /* TINYCOLORSPACE_H_ */

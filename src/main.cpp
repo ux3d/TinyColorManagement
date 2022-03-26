@@ -2,11 +2,8 @@
 #include <string>
 #include <vector>
 
-#include <OpenImageIO/imageio.h>
 
 #include "TinyColorSpace.h"
-
-using namespace OIIO;
 
 //
 
@@ -102,38 +99,27 @@ int main(int argc, char* argv[])
 	*/
 
 	// Tonemap
-	imageData.modify([&](const glm::vec4& color) {
+	/*imageData.modify([&](const glm::vec4& color) {
 		return glm::vec4(tonemapReinhard(color), color.a);
-	});
+	});*/
 
 	//
 
-	/*const char* filename = "test.exr";
-	std::unique_ptr<ImageOutput> output = ImageOutput::create(filename);
-	if (!output)
+	std::string filename;
+
+	filename = "test.exr";
+	if (!save(imageData, filename))
 	{
 		return -1;
 	}
-	ImageSpec spec (imageData.getWidth(), imageData.getHeight(), imageData.getChannels(), TypeDesc::FLOAT);
-	output->open(filename, spec);
-	output->write_image(TypeDesc::FLOAT, imageData.getPixelsData());
-	output->close();*/
+	printf("Saved '%s'\n", filename.c_str());
 
-	std::vector<uint8_t> pixelData;
-	imageData.gatherPixelDataUINT8(pixelData);
-
-	const char* filename = "test.png";
-	std::unique_ptr<ImageOutput> output = ImageOutput::create(filename);
-	if (!output)
+	filename = "test.png";
+	if (!save(imageData, filename))
 	{
 		return -1;
 	}
-	ImageSpec spec (imageData.getWidth(), imageData.getHeight(), imageData.getChannels(), TypeDesc::UINT8);
-	output->open(filename, spec);
-	output->write_image(TypeDesc::UINT8, pixelData.data());
-	output->close();
-
-	printf("Saved '%s'\n", filename);
+	printf("Saved '%s'\n", filename.c_str());
 
 	return 0;
 }

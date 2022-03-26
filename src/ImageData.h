@@ -55,12 +55,6 @@ public:
 
 	bool modify(std::function<glm::vec4(const glm::vec4& color)> f);
 
-	//
-
-	bool gatherPixelDataSFLOAT(std::vector<float>& convertedPixels);
-
-	bool gatherPixelDataUINT8(std::vector<uint8_t>& convertedPixels);
-
 };
 
 #endif /* IMAGEDATA_H_ */

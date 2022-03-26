@@ -15,4 +15,6 @@
 
 #include "ImageData.h"
 
+#include "ImageDataIO.h"
+
 #endif /* TINYCOLORSPACE_H_ */

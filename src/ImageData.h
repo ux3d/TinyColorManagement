@@ -2,6 +2,7 @@
 #define IMAGEDATA_H_
 
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 #include "ColorPrimaries.h"
@@ -40,15 +41,19 @@ public:
 
 	bool setColor(uint32_t x, uint32_t y, const glm::vec4& color);
 
-	bool fill(const glm::vec4& color);
+	//
 
-	bool multiply(const glm::vec4& color);
+	bool generateFill(const glm::vec4& color);
 
-	bool gradeHorizontal(const glm::vec4& start, const glm::vec4& end);
+	bool generateGradeHorizontal(const glm::vec4& start, const glm::vec4& end);
 
-	bool gradeVertical(const glm::vec4& start, const glm::vec4& end);
+	bool generateGradeVertical(const glm::vec4& start, const glm::vec4& end);
 
-	bool chromacity(double Y);
+	bool generateChromacity(double Y);
+
+	//
+
+	bool modify(std::function<glm::vec4(const glm::vec4& color)> f);
 
 	//
 

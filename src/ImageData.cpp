@@ -104,49 +104,21 @@ bool ImageData::setColor(uint32_t x, uint32_t y, const glm::vec4& color)
 	return true;
 }
 
-bool ImageData::fill(const glm::vec4& color)
+bool ImageData::generateFill(const glm::vec4& color)
 {
 	if (!isValid())
 	{
 		return false;
 	}
 
-	for (uint32_t y = 0; y < height; y++)
-	{
-		for (uint32_t x = 0; x < width; x++)
-		{
-			for (uint32_t c = 0; c < channels; c++)
-			{
-				pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
-			}
-		}
-	}
-
-	return false;
-}
-
-bool ImageData::multiply(const glm::vec4& color)
-{
-	if (!isValid())
-	{
-		return false;
-	}
-
-	for (uint32_t y = 0; y < height; y++)
-	{
-		for (uint32_t x = 0; x < width; x++)
-		{
-			for (uint32_t c = 0; c < channels; c++)
-			{
-				pixels[channels * width * (height - 1 - y) + channels * x + c] *= color[c];
-			}
-		}
-	}
+	this->modify([&](const glm::vec4& c) {
+		return color;
+	});
 
 	return true;
 }
 
-bool ImageData::gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
+bool ImageData::generateGradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 {
 	if (!isValid())
 	{
@@ -171,7 +143,7 @@ bool ImageData::gradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 	return true;
 }
 
-bool ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
+bool ImageData::generateGradeVertical(const glm::vec4& start, const glm::vec4& end)
 {
 	if (!isValid())
 	{
@@ -196,7 +168,7 @@ bool ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
 	return true;
 }
 
-bool ImageData::chromacity(double Y)
+bool ImageData::generateChromacity(double Y)
 {
 	if (!isValid())
 	{
@@ -280,6 +252,38 @@ bool ImageData::chromacity(double Y)
 
 				color = RGB;
 			}
+
+			for (uint32_t c = 0; c < channels; c++)
+			{
+				pixels[channels * width * (height - 1 - y) + channels * x + c] = color[c];
+			}
+		}
+	}
+
+	return true;
+}
+
+//
+
+bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color)> f)
+{
+	if (!isValid())
+	{
+		return false;
+	}
+
+	for (uint32_t y = 0; y < height; y++)
+	{
+		for (uint32_t x = 0; x < width; x++)
+		{
+			glm::vec4 color = glm::vec4(0.0, 0.0, 0.0, 1.0);
+
+			for (uint32_t c = 0; c < channels; c++)
+			{
+				color[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
+			}
+
+			color = f(color);
 
 			for (uint32_t c = 0; c < channels; c++)
 			{

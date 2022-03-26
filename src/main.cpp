@@ -79,10 +79,32 @@ int main(int argc, char* argv[])
 	//
 
 	ImageData imageData(3, 512, 512);
-	//imageData.fill(glm::vec4(1.0, 0.0, 0.0, 0.0));
-	//imageData.gradeHorizontal(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
-	//imageData.gradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
-	imageData.chromacity(1.0);
+
+	imageData.generateFill(glm::vec4(0.0, 0.8, 0.0, 1.0));
+	//imageData.generateGradeHorizontal(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
+	//imageData.generateGradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
+	//imageData.generateChromacity(1.0);
+
+	/*
+	// Fill with color
+	glm::vec4 yellowColor = glm::vec4(1.0, 1.0, 0.0, 1.0);
+	imageData.modify([&](const glm::vec4& color) {
+		return yellowColor;
+	});
+	*/
+
+	/*
+	// Multiply color with given factor
+	double factor = 0.5;
+	imageData.modify([&](const glm::vec4& color) {
+		return color * glm::vec4(factor, factor, factor, 1.0);
+	});
+	*/
+
+	// Tonemap
+	imageData.modify([&](const glm::vec4& color) {
+		return glm::vec4(tonemapReinhard(color), color.a);
+	});
 
 	//
 

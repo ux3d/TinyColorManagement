@@ -196,7 +196,7 @@ bool ImageData::gradeVertical(const glm::vec4& start, const glm::vec4& end)
 	return true;
 }
 
-bool ImageData::chromacity(const Chromaticities& chroma, double Y)
+bool ImageData::chromacity(double Y)
 {
 	if (!isValid())
 	{

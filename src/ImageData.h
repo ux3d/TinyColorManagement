@@ -48,7 +48,7 @@ public:
 
 	bool gradeVertical(const glm::vec4& start, const glm::vec4& end);
 
-	bool chromacity(const Chromaticities& chroma, double Y);
+	bool chromacity(double Y);
 
 	//
 

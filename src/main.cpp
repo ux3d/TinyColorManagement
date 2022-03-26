@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 	//imageData.fill(glm::vec4(1.0, 0.0, 0.0, 0.0));
 	//imageData.gradeHorizontal(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
 	//imageData.gradeVertical(glm::vec4(1.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.0));
-	imageData.chromacity(SRGB, 1.0);
+	imageData.chromacity(1.0);
 
 	//
 

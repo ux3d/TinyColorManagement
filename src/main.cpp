@@ -5,7 +5,6 @@
 #include <OpenImageIO/imageio.h>
 
 #include "TinyColorSpace.h"
-#include "CIE_XYZ_cmf.h"
 
 using namespace OIIO;
 

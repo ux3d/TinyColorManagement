@@ -4,6 +4,9 @@
 #include "CIE_XYZ_cmf.h"
 
 #include "ColorPrimaries.h"
+
+#include "Luminance.h"
+
 #include "ACES.h"
 
 #include "TransferFunctions.h"

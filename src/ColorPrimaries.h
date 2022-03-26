@@ -97,10 +97,4 @@ const glm::mat3 XYZ_2_AP1 = XYZ_2_RGB(AP1, 1.0f);
 const glm::mat3 D65_2_D60 = chromaticAdaptationMatrix(REC709.white, AP0.white);
 const glm::mat3 D60_2_D65 = chromaticAdaptationMatrix(AP0.white, REC709.white);
 
-
-//
-
-double SRGB_2_Y(const glm::vec3& color);
-double REC709_2_Y(const glm::vec3& color);
-
 #endif /* COLORPRIMARIES_H_ */

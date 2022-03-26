@@ -114,15 +114,3 @@ glm::mat3 chromaticAdaptationMatrix(const glm::vec2& source, const glm::vec2& de
 
 	return glm::inverse(ConeResponseBradford) * Ma * ConeResponseBradford;
 };
-
-//
-
-double SRGB_2_Y(const glm::vec3& color)
-{
-	return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
-}
-
-double REC709_2_Y(const glm::vec3& color)
-{
-	return SRGB_2_Y(color);
-}

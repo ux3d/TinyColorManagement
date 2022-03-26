@@ -13,4 +13,6 @@
 
 #include "TransferFunctions.h"
 
+#include "ImageData.h"
+
 #endif /* TINYCOLORSPACE_H_ */

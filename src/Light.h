@@ -34,7 +34,7 @@
 
 // Luminance (Leuchtdichte)
 // Symbol:	L
-// Unit:	cd / m² (candela per square meter)
+// Unit:	cd / m² (candela per square meter) = nits
 // https://en.wikipedia.org/wiki/Luminance
 // https://de.wikipedia.org/wiki/Leuchtdichte
 

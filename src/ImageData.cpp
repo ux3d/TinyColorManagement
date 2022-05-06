@@ -257,6 +257,9 @@ bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, double s,
 		return false;
 	}
 
+	double xStep = 1.0 / (width + 1);
+	double yStep = 1.0 / (height + 1);
+
 	for (uint32_t y = 0; y < height; y++)
 	{
 		for (uint32_t x = 0; x < width; x++)
@@ -268,7 +271,7 @@ bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, double s,
 				color[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
 			}
 
-			color = f(color, (float)x / (float)(width - 1), (float)y / (float)(height - 1));
+			color = f(color, (double)(x + 1) * xStep, (double)(y + 1) * yStep);
 
 			for (uint32_t c = 0; c < channels; c++)
 			{

@@ -139,7 +139,7 @@ bool ImageData::generateFill(const glm::vec4& color)
 		return false;
 	}
 
-	this->modify([&](const glm::vec4& c) {
+	this->modify([&](const glm::vec4& c, double s, double t) {
 		return color;
 	});
 
@@ -293,7 +293,7 @@ bool ImageData::generateChromacity(double Y)
 
 //
 
-bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color)> f)
+bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, double s, double t)> f)
 {
 	if (!isValid())
 	{
@@ -311,7 +311,7 @@ bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color)> f)
 				color[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
 			}
 
-			color = f(color);
+			color = f(color, (float)x / (float)(width - 1), (float)(height - 1 - y) / (float)(height - 1));
 
 			for (uint32_t c = 0; c < channels; c++)
 			{

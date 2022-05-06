@@ -134,66 +134,23 @@ bool ImageData::setColor(uint32_t x, uint32_t y, const glm::vec4& color)
 
 bool ImageData::generateFill(const glm::vec4& color)
 {
-	if (!isValid())
-	{
-		return false;
-	}
-
-	this->modify([&](const glm::vec4& c, double s, double t) {
+	return this->modify([&](const glm::vec4& c, double s, double t) {
 		return color;
 	});
-
-	return true;
 }
 
 bool ImageData::generateGradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 {
-	if (!isValid())
-	{
-		return false;
-	}
-
-	for (uint32_t y = 0; y < height; y++)
-	{
-		for (uint32_t x = 0; x < width; x++)
-		{
-			double weight = (double)x / (double)(width - 1);
-
-			glm::vec4 gradient = glm::mix(start, end, weight);
-
-			for (uint32_t c = 0; c < channels; c++)
-			{
-				pixels[channels * width * (height - 1 - y) + channels * x + c] = gradient[c];
-			}
-		}
-	}
-
-	return true;
+	return this->modify([&](const glm::vec4& c, double s, double t) {
+		return glm::mix(start, end, s);
+	});
 }
 
 bool ImageData::generateGradeVertical(const glm::vec4& start, const glm::vec4& end)
 {
-	if (!isValid())
-	{
-		return false;
-	}
-
-	for (uint32_t y = 0; y < height; y++)
-	{
-		for (uint32_t x = 0; x < width; x++)
-		{
-			double weight = (double)y / (double)(height - 1);
-
-			glm::vec4 gradient = glm::mix(start, end, weight);
-
-			for (uint32_t c = 0; c < channels; c++)
-			{
-				pixels[channels * width * (height - 1 - y) + channels * x + c] = gradient[c];
-			}
-		}
-	}
-
-	return true;
+	return this->modify([&](const glm::vec4& c, double s, double t) {
+		return glm::mix(start, end, t);
+	});
 }
 
 bool ImageData::generateChromacity(double Y)
@@ -311,7 +268,7 @@ bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, double s,
 				color[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
 			}
 
-			color = f(color, (float)x / (float)(width - 1), (float)(height - 1 - y) / (float)(height - 1));
+			color = f(color, (float)x / (float)(width - 1), (float)y / (float)(height - 1));
 
 			for (uint32_t c = 0; c < channels; c++)
 			{

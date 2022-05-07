@@ -134,22 +134,22 @@ bool ImageData::setColor(uint32_t x, uint32_t y, const glm::vec4& color)
 
 bool ImageData::generateFill(const glm::vec4& color)
 {
-	return this->modify([&](const glm::vec4& c, uint32_t x, uint32_t y, double s, double t) {
+	return this->modify([&](const glm::vec4& c, const glm::vec2& percent, const glm::vec2& coordinate) {
 		return color;
 	});
 }
 
 bool ImageData::generateGradeHorizontal(const glm::vec4& start, const glm::vec4& end)
 {
-	return this->modify([&](const glm::vec4& c, uint32_t x, uint32_t y, double s, double t) {
-		return glm::mix(start, end, s);
+	return this->modify([&](const glm::vec4& c, const glm::vec2& percent, const glm::vec2& coordinate) {
+		return glm::mix(start, end, percent.s);
 	});
 }
 
 bool ImageData::generateGradeVertical(const glm::vec4& start, const glm::vec4& end)
 {
-	return this->modify([&](const glm::vec4& c, uint32_t x, uint32_t y, double s, double t) {
-		return glm::mix(start, end, t);
+	return this->modify([&](const glm::vec4& c, const glm::vec2& percent, const glm::vec2& coordinate) {
+		return glm::mix(start, end, percent.t);
 	});
 }
 
@@ -250,7 +250,7 @@ bool ImageData::generateChromacity(double Y)
 
 //
 
-bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, uint32_t x, uint32_t y, double s, double t)> f)
+bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, const glm::vec2& percent, const glm::vec2& coordinate)> f)
 {
 	if (!isValid())
 	{
@@ -271,7 +271,7 @@ bool ImageData::modify(std::function<glm::vec4(const glm::vec4& color, uint32_t 
 				color[c] = pixels[channels * width * (height - 1 - y) + channels * x + c];
 			}
 
-			color = f(color, x, y, (double)(x + 1) * xStep, (double)(y + 1) * yStep);
+			color = f(color, glm::vec2((double)x/(double)(width - 1), (double)y/(double)(height - 1)), glm::vec2((double)(x + 1) * xStep, (double)(y + 1) * yStep));
 
 			for (uint32_t c = 0; c < channels; c++)
 			{

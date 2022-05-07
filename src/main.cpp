@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	/*
 	// Fill with color
 	glm::vec4 yellowColor = glm::vec4(1.0, 1.0, 0.0, 1.0);
-	imageData.modify([&](const glm::vec4& color, uint32_t x, uint32_t y, double s, double t) {
+	imageData.modify([&](const glm::vec4& color, const glm::vec2& percent, const glm::vec2& coordinate) {
 		return yellowColor;
 	});
 	*/
@@ -93,13 +93,13 @@ int main(int argc, char* argv[])
 	/*
 	// Multiply color with given factor
 	double factor = 0.5;
-	imageData.modify([&](const glm::vec4& color, uint32_t x, uint32_t y, double s, double t) {
+	imageData.modify([&](const glm::vec4& color, const glm::vec2& percent, const glm::vec2& coordinate) {
 		return color * glm::vec4(factor, factor, factor, 1.0);
 	});
 	*/
 
 	// Tonemap
-	/*imageData.modify([&](const glm::vec4& color, uint32_t x, uint32_t y, double s, double t) {
+	/*imageData.modify([&](const glm::vec4& color, const glm::vec2& percent, const glm::vec2& coordinate) {
 		return glm::vec4(tonemapReinhard(color), color.a);
 	});*/
 

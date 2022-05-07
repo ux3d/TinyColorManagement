@@ -2,19 +2,20 @@
 
 #include <cstdio>
 
-void printMat3(const glm::mat3& matrix, bool HLSL)
+void printMat3(const glm::mat3& matrix, bool rowMajor)
 {
 	glm::mat3 m = matrix;
-	if (HLSL)
+	if (rowMajor)
 	{
 		m = glm::transpose(m);
-		printf("// HLSL\n");
+		printf("// Row written per row\n");
 	}
 	else
 	{
-		printf("// GLSL\n");
+		printf("// Column written per row\n");
 	}
 
+	// Note: r and c are the row and column for the printed matrix.
 	printf("const mat3 m = mat3(\n");
 	for (size_t r = 0; r < 3; r++)
 	{

@@ -1,6 +1,6 @@
 # Tiny Color Space
 
-Basic color conversion functions far from complete.  
+Essential color conversion functions and more.  
 
 
 ## Software Requirements

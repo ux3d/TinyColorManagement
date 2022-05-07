@@ -56,7 +56,7 @@ public:
 
 	//
 
-	bool modify(std::function<glm::vec4(const glm::vec4& color, double s, double t)> f);
+	bool modify(std::function<glm::vec4(const glm::vec4& color, uint32_t x, uint32_t y, double s, double t)> f);
 
 };
 

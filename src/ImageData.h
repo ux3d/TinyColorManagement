@@ -46,10 +46,6 @@ public:
 
 	//
 
-	bool generateChromacity(double Y);
-
-	//
-
 	bool modify(std::function<glm::vec4(const glm::vec4& color, const glm::vec2& fraction, const glm::vec2& coordinate)> f);
 
 };

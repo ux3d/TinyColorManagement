@@ -11,4 +11,6 @@ bool gradeVertical(ImageData& imageData, const glm::vec4& start, const glm::vec4
 
 bool multiply(ImageData& imageData, double factor);
 
+bool chromacity(ImageData& imageData, double Y);
+
 #endif /* IMAGEDATAMODIFY_H_ */

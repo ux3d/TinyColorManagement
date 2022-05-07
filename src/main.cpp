@@ -77,12 +77,7 @@ int main(int argc, char* argv[])
 
 	ImageData imageData(3, 512, 512);
 
-	//imageData.generateChromacity(1.0);
-
-	// Tonemap
-	/*imageData.modify([&](const glm::vec4& color, const glm::vec2& fraction, const glm::vec2& coordinate) {
-		return glm::vec4(tonemapReinhard(color), color.a);
-	});*/
+	chromacity(imageData, 1.0);
 
 	//
 
@@ -120,14 +115,6 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	printf("Saved '%s'\n", filename.c_str());
-
-	//
-
-	// Sunny 16 rule with a 50mm lense see https://en.wikipedia.org/wiki/Sunny_16_rule
-
-	double lense = 50.0;
-	double ev100 = calculateEV100(lense / 16.0, 1.0 / 100.0, 100.0);
-	printf("Exposure: %f\n", EV100_2_EXPOSURE(ev100));
 
 	return 0;
 }

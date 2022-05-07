@@ -46,17 +46,11 @@ public:
 
 	//
 
-	bool generateFill(const glm::vec4& color);
-
-	bool generateGradeHorizontal(const glm::vec4& start, const glm::vec4& end);
-
-	bool generateGradeVertical(const glm::vec4& start, const glm::vec4& end);
-
 	bool generateChromacity(double Y);
 
 	//
 
-	bool modify(std::function<glm::vec4(const glm::vec4& color, const glm::vec2& percent, const glm::vec2& coordinate)> f);
+	bool modify(std::function<glm::vec4(const glm::vec4& color, const glm::vec2& fraction, const glm::vec2& coordinate)> f);
 
 };
 

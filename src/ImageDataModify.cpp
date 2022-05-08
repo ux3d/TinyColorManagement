@@ -105,6 +105,6 @@ bool chromacity(ImageData& imageData, double Y)
 			return glm::vec4(RGB, 1.0);
 		}
 
-		return glm::vec4(0.0, 0.0, 0.0, 1.0);
+		return glm::vec4(0.0, 0.0, 0.0, 0.0);
 	});
 }

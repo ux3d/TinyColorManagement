@@ -5,26 +5,28 @@
 
 int main(int argc, char* argv[])
 {
-	glm::mat3 test = glm::mat3(1.0);
-
+	//
+	// Printing out matrices for usage in shader code.
 	//
 
+	glm::mat3 test = glm::mat3(1.0);
+
+	// From SRGB to AP1 color space
 	test = XYZ_2_AP1 * D65_2_D60 * SRGB_2_XYZ;
 	printMat3(test);
+
+	// Approximated ACES tone mapping from Stephen Hill
 
 	printMat3(RRT_SAT);
 
 	test = RRT_SAT * test;
 	printMat3(test);
 
-	printf("---\n\n");
+	printMat3(ODT_SAT);
 
-	//
-
+	// From AP1 to SRGB color space
 	test = XYZ_2_SRGB * D60_2_D65 * AP1_2_XYZ;
 	printMat3(test);
-
-	printMat3(ODT_SAT);
 
 	test = test * ODT_SAT;
 	printMat3(test);
@@ -32,14 +34,14 @@ int main(int argc, char* argv[])
 	printf("---\n\n");
 
 	//
-	//
+	// Generating a color gamut.
 	//
 
-	ImageData imageData(3, 512, 512);
+	ImageData imageData(4, 512, 512);
 
 	chromacity(imageData, 1.0);
 
-	//
+	// Saving and loading of different file formats.
 
 	std::string filename;
 

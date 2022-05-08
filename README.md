@@ -2,6 +2,8 @@
 
 Essential color conversion functions and more.  
 
+![](test.png)  
+Calculated ow resolution CIE 1931 chromaticity diagram  
 
 ## Software Requirements
 

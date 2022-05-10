@@ -52,6 +52,11 @@ int main(int argc, char* argv[])
 	}
 	printf("Saved '%s'\n", filename.c_str());
 
+	// Convert from linear to non-linear space.
+	imageData.modify([&](const glm::vec4& color, const glm::vec2& fraction, const glm::vec2& coordinate) {
+		return glm::vec4(SRGB_2_nlSRGB(glm::vec3(color)), color.a);
+	});
+
 	filename = "test.png";
 	if (!save(imageData, filename))
 	{

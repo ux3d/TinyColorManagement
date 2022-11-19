@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-// // see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_CONVERSION
+// see https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#TRANSFER_CONVERSION
 
 glm::vec3 nlSRGB_2_SRGB_Fast(const glm::vec3& color);
 glm::vec3 SRGB_2_nlSRGB_Fast(const glm::vec3& color);

@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 
 	glm::mat3 test = glm::mat3(1.0);
 
-	// From SRGB to AP1 color space
+	// From sRGB to AP1 color space
 	test = XYZ_to_AP1 * D65_to_D60 * sRGB_to_XYZ;
 	printMat3(test);
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 
 	printMat3(ODT_SAT);
 
-	// From AP1 to SRGB color space
+	// From AP1 to sRGB color space
 	test = XYZ_to_sRGB * D60_to_D65 * AP1_to_XYZ;
 	printMat3(test);
 

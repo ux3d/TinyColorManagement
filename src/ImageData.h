@@ -22,7 +22,7 @@ private:
 public:
 
 	ImageData();
-	ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace = ColorSpace_SRGB);
+	ImageData(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace = ColorSpace_sRGB);
 
 	bool reformat(uint32_t channels, uint32_t width, uint32_t height, ColorSpace colorSpace, const std::vector<float>& pixelData);
 

@@ -27,14 +27,14 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 
 		switch (colorSpace)
 		{
-			case ColorSpace_SRGB:
-					XYZ = SRGB_2_XYZ * color;
+			case ColorSpace_sRGB:
+					XYZ = sRGB_to_XYZ * color;
 				break;
 			case ColorSpace_REC709:
-					XYZ = REC709_2_XYZ * color;
+					XYZ = REC709_to_XYZ * color;
 				break;
 			case ColorSpace_REC2020:
-					XYZ = REC2020_2_XYZ * color;
+					XYZ = REC2020_to_XYZ * color;
 				break;
 			case ColorSpace_AP1:
 			default:
@@ -42,7 +42,7 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 				break;
 		}
 
-		AP1 = XYZ_2_AP1 * D65_2_D60 * XYZ;
+		AP1 = XYZ_to_AP1 * D65_to_D60 * XYZ;
 	}
 
 	// ACES tonemapping in AP1 color space
@@ -65,18 +65,18 @@ glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace)
 
 	if (colorSpace != ColorSpace_AP1)
 	{
-		glm::vec3 XYZ = D60_2_D65 * AP1_2_XYZ * AP1;
+		glm::vec3 XYZ = D60_to_D65 * AP1_to_XYZ * AP1;
 
 		switch (colorSpace)
 		{
-			case ColorSpace_SRGB:
-					result = XYZ_2_SRGB * XYZ;
+			case ColorSpace_sRGB:
+					result = XYZ_to_sRGB * XYZ;
 				break;
 			case ColorSpace_REC709:
-					result = XYZ_2_REC709 * XYZ;
+					result = XYZ_to_REC709 * XYZ;
 				break;
 			case ColorSpace_REC2020:
-					result = XYZ_2_REC2020 * XYZ;
+					result = XYZ_to_REC2020 * XYZ;
 				break;
 			case ColorSpace_AP1:
 			default:

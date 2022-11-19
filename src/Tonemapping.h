@@ -9,6 +9,6 @@ glm::vec3 tonemapNone(const glm::vec3& color);
 
 glm::vec3 tonemapReinhard(const glm::vec3& color);
 
-glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace = ColorSpace_SRGB);
+glm::vec3 tonemapAces(const glm::vec3& color, ColorSpace colorSpace = ColorSpace_sRGB);
 
 #endif /* TONEMAPPING_H_ */

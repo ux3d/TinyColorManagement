@@ -89,5 +89,5 @@ bool load(ImageData& imageData, const std::string& filename)
 		return false;
 	}
 
-	return imageData.reformat(imageSpec.nchannels, imageSpec.width, imageSpec.height, ColorSpace_SRGB, pixelData);
+	return imageData.reformat(imageSpec.nchannels, imageSpec.width, imageSpec.height, ColorSpace_sRGB, pixelData);
 }

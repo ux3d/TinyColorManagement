@@ -37,7 +37,7 @@ bool chromacity(ImageData& imageData, double Y)
 	for (size_t i = 0; i < cmf1931.size(); i++)
 	{
 		glm::vec3 XYZ = cmf1931[i].XYZ;
-		glm::vec3 xyY = XYZ_2_xyY(XYZ);
+		glm::vec3 xyY = XYZ_to_xyY(XYZ);
 
 		xyYs.push_back(xyY);
 	}
@@ -77,22 +77,22 @@ bool chromacity(ImageData& imageData, double Y)
 
 		if (bottomLeft && bottomRight && topLeft && topRight)
 		{
-			glm::vec3 XYZ = xyY_2_XYZ(glm::vec3(xC, yC, Y));
+			glm::vec3 XYZ = xyY_to_XYZ(glm::vec3(xC, yC, Y));
 
 			glm::vec3 RGB;
 			switch (imageData.getColorSpace())
 			{
-				case ColorSpace_SRGB:
-						RGB = XYZ_2_SRGB * XYZ;
+				case ColorSpace_sRGB:
+						RGB = XYZ_to_sRGB * XYZ;
 					break;
 				case ColorSpace_REC709:
-						RGB = XYZ_2_REC709 * XYZ;
+						RGB = XYZ_to_REC709 * XYZ;
 					break;
 				case ColorSpace_REC2020:
-						RGB = XYZ_2_REC2020 * XYZ;
+						RGB = XYZ_to_REC2020 * XYZ;
 					break;
 				case ColorSpace_AP1:
-						RGB = XYZ_2_AP1 * XYZ;
+						RGB = XYZ_to_AP1 * XYZ;
 					break;
 				default:
 						// Unreachable code

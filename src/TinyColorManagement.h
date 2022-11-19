@@ -1,5 +1,5 @@
-#ifndef TINYCOLORSPACE_H_
-#define TINYCOLORSPACE_H_
+#ifndef TINYCOLORMANAGEMENT_H_
+#define TINYCOLORMANAGEMENT_H_
 
 #include "Generator.h"
 
@@ -23,4 +23,4 @@
 
 #include "Exposure.h"
 
-#endif /* TINYCOLORSPACE_H_ */
+#endif /* TINYCOLORMANAGEMENT_H_ */

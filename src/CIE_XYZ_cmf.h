@@ -487,6 +487,6 @@ static const std::vector<CIE_XYZ_cmf> cmf1931 = {
 		{830,{0.000001251141,0.000000451810,0.000000000000}}
 };
 
-glm::vec3 WAVELENGTH_2_XYZ(double wavelength);
+glm::vec3 WAVELENGTH_to_XYZ(double wavelength);
 
 #endif /* CIE_XYZ_CMF_H_ */

@@ -3,36 +3,36 @@
 
 #include "ColorPrimaries.h"
 
-const glm::vec3 SRGB_2_Yrgb = {
-	SRGB_2_XYZ[0][1],
-	SRGB_2_XYZ[1][1],
-	SRGB_2_XYZ[2][1]
+const glm::vec3 sRGB_to_Yrgb = {
+	sRGB_to_XYZ[0][1],
+	sRGB_to_XYZ[1][1],
+	sRGB_to_XYZ[2][1]
 };
 
-const glm::vec3 REC709_2_Yrgb = {
-	REC709_2_XYZ[0][1],
-	REC709_2_XYZ[1][1],
-	REC709_2_XYZ[2][1]
+const glm::vec3 REC709_to_Yrgb = {
+	REC709_to_XYZ[0][1],
+	REC709_to_XYZ[1][1],
+	REC709_to_XYZ[2][1]
 };
 
-const glm::vec3 REC2020_2_Yrgb = {
-	REC2020_2_XYZ[0][1],
-	REC2020_2_XYZ[1][1],
-	REC2020_2_XYZ[2][1]
+const glm::vec3 REC2020_to_Yrgb = {
+	REC2020_to_XYZ[0][1],
+	REC2020_to_XYZ[1][1],
+	REC2020_to_XYZ[2][1]
 };
 
-const glm::vec3 AP1_2_Yrgb = {
-	AP1_2_XYZ[0][1],
-	AP1_2_XYZ[1][1],
-	AP1_2_XYZ[2][1]
+const glm::vec3 AP1_to_Yrgb = {
+	AP1_to_XYZ[0][1],
+	AP1_to_XYZ[1][1],
+	AP1_to_XYZ[2][1]
 };
 
-double SRGB_2_Y(const glm::vec3& color);
+double sRGB_to_Y(const glm::vec3& color);
 
-double REC709_2_Y(const glm::vec3& color);
+double REC709_to_Y(const glm::vec3& color);
 
-double REC2020_2_Y(const glm::vec3& color);
+double REC2020_to_Y(const glm::vec3& color);
 
-double AP1_2_Y(const glm::vec3& color);
+double AP1_to_Y(const glm::vec3& color);
 
 #endif /* LUMINANCE_H_ */

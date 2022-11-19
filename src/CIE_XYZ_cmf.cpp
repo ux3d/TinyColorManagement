@@ -1,6 +1,6 @@
 #include "CIE_XYZ_cmf.h"
 
-glm::vec3 WAVELENGTH_2_XYZ(double wavelength)
+glm::vec3 WAVELENGTH_to_XYZ(double wavelength)
 {
 	if (wavelength < cmf1931.front().wavelength || wavelength > cmf1931.back().wavelength)
 	{

@@ -53,7 +53,7 @@
 =============================================================================
 */
 
-glm::vec3 XYZ_2_xyY(glm::vec3 XYZ)
+glm::vec3 XYZ_to_xyY(glm::vec3 XYZ)
 {
 	glm::vec3 xyY;
 
@@ -70,7 +70,7 @@ glm::vec3 XYZ_2_xyY(glm::vec3 XYZ)
 	return xyY;
 }
 
-glm::vec3 xyY_2_XYZ(glm::vec3 xyY)
+glm::vec3 xyY_to_XYZ(glm::vec3 xyY)
 {
 	glm::vec3 XYZ;
 
@@ -83,7 +83,7 @@ glm::vec3 xyY_2_XYZ(glm::vec3 xyY)
 
 //
 
-glm::mat3 RGB_2_XYZ(const Chromaticities& chroma, double Y)
+glm::mat3 RGB_to_XYZ(const Chromaticities& chroma, double Y)
 {
 	// X and Z values of RGB value (1, 1, 1), or "white"
 
@@ -133,9 +133,9 @@ glm::mat3 RGB_2_XYZ(const Chromaticities& chroma, double Y)
 	return M;
 }
 
-glm::mat3 XYZ_2_RGB(const Chromaticities& chroma, double Y)
+glm::mat3 XYZ_to_RGB(const Chromaticities& chroma, double Y)
 {
-    return glm::inverse(RGB_2_XYZ(chroma, Y));
+    return glm::inverse(RGB_to_XYZ(chroma, Y));
 }
 
 //
@@ -151,8 +151,8 @@ glm::mat3 chromaticAdaptationMatrix(const glm::vec2& source, const glm::vec2& de
 	glm::vec3 source_xyY = glm::vec3(source, 1.0);
 	glm::vec3 destination_xyY = glm::vec3(destination, 1.0);
 
-	glm::vec3 source_XYZ = xyY_2_XYZ(source_xyY);
-	glm::vec3 destination_XYZ = xyY_2_XYZ(destination_xyY);
+	glm::vec3 source_XYZ = xyY_to_XYZ(source_xyY);
+	glm::vec3 destination_XYZ = xyY_to_XYZ(destination_xyY);
 
 	//
 

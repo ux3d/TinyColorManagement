@@ -1,6 +1,6 @@
-# Tiny Color Space
+# Tiny Color Management
 
-Essential color conversion functions and more.  
+Essential color management functions.  
 
 ![](CIE-1931.png)  
 Calculated low resolution CIE 1931 chromaticity diagram  

@@ -18,6 +18,9 @@
 //
 // Chromatic Adaptation
 // http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html
+//
+// Conversion
+// http://www.brucelindbloom.com/index.html
 
 // Illuminant
 const glm::vec2 D65 = { 0.3127,  0.3290};

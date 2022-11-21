@@ -79,7 +79,7 @@ bool load(ImageData& imageData, const std::string& filename)
 	imageSpec.format.basetype = TypeDesc::FLOAT;
 
 	std::vector<float> pixelData(sizeof(float) * imageSpec.nchannels * imageSpec.width * imageSpec.height);
-	if (!imageInput->read_image(imageSpec.format, pixelData.data()))
+	if (!imageInput->read_image(0, 0, 0, -1, imageSpec.format, pixelData.data()))
 	{
 		return false;
 	}
